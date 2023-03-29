@@ -325,7 +325,7 @@ React는 개발 과정에서 [순수한지 확인하기 위해](/learn/keeping-c
 
 그러나 동일한 이벤트 내에서 여러 번 업데이트를 수행하는 경우 업데이터 함수가 유용할 수 있습니다. 상태 변수 자체에 액세스하는 것이 불편한 경우에도 유용합니다(리렌더를 최적화할 때 이 문제가 발생할 수 있습니다).
 
-조금 더 자세한 구문보다 일관성을 선호하는 경우 설정하려는 상태가 이전 상태에서 계산되는 경우 항상 업데이터를 작성하는 것이 합리적입니다. 다른 상태 변수의 이전 상태에서 계산되는 경우, 이를 하나의 객체로 결합하고 [리듀서를 사용하는 것이 좋습니다.](/learn/extracting-state-logic-into-a-reducer)
+조금 더 자세한 구문보다 일관성을 선호하는 경우 설정하려는 상태가 이전 상태에서 계산되는 경우 항상 업데이터를 작성하는 것이 합리적입니다. 다른 상태 변수의 이전 상태에서 계산되는 경우, 이를 하나의 오브젝트로 결합하고 [리듀서를 사용하는 것이 좋습니다.](/learn/extracting-state-logic-into-a-reducer)
 
 </DeepDive>
 
@@ -417,20 +417,20 @@ h1 { display: block; margin: 10px; }
 
 ---
 
-### 상태의 객체 및 배열 업데이트하기 {/*updating-objects-and-arrays-in-state*/}
+### 상태의 오브젝트 및 배열 업데이트하기 {/*updating-objects-and-arrays-in-state*/}
 
-객체와 배열을 state에 넣을 수 있습니다. React에서 state는 읽기 전용으로 간주되므로 **기존 객체를 *변경*하는 것이 아니라 **대체*해야 합니다**. 예를 들어, state에 'form' 객체가 있다면 변경하지 마세요:
+오브젝트와 배열을 state에 넣을 수 있습니다. React에서 state는 읽기 전용으로 간주되므로 **기존 오브젝트를 *변경*하는 것이 아니라 *대체*해야 합니다**. 예를 들어, state에 'form' 오브젝트가 있다면 변경하지 마세요:
 
 
 ```js
-// 🚩 Don't mutate an object in state like this:
+// 🚩 다음과 같은 state의 오브젝트를 변경하지 마세요:
 form.firstName = 'Taylor';
 ```
 
-Instead, replace the whole object by creating a new one:
+대신, 새 오브젝트를 생성하여 전체 오브젝트를 교체합니다:
 
 ```js
-// ✅ Replace state with a new object
+// ✅ state를 새 오브젝트로 바꾸기
 setForm({
   ...form,
   firstName: 'Taylor'
@@ -443,7 +443,7 @@ setForm({
 
 #### Form (object) {/*form-object*/}
 
-이 예제에서 `form` 상태 변수는 객체를 보유합니다. 각 입력에는 전체 양식의 다음 상태로 `setForm`을 호출하는 변경 핸들러가 있습니다. 스프레드 구문 `{ ...form }`은 상태 객체가 변경되지 않고 대체되도록 합니다.
+이 예제에서 `form` 상태 변수는 오브젝트를 보유합니다. 각 입력에는 전체 양식의 다음 상태로 `setForm`을 호출하는 변경 핸들러가 있습니다. 스프레드 구문 `{ ...form }`은 상태 오브젝트가 변경되지 않고 대체되도록 합니다.
 
 <Sandpack>
 
@@ -516,7 +516,7 @@ input { margin-left: 5px; }
 
 #### 폼 (중첩된 오브젝트) {/*form-nested-object*/}
 
-이 예제에서는 상태가 더 중첩되어 있습니다. 중첩된 상태를 업데이트할 때는 업데이트하려는 객체의 복사본과 그 위에 있는 객체를 "포함하는" 객체를 모두 만들어야 합니다. 자세한 내용은 [중첩된 오브젝트 업데이트 하기](/learn/updating-objects-in-state#updating-a-nested-object)를 읽어 보시기 바랍니다.
+이 예제에서는 상태가 더 중첩되어 있습니다. 중첩된 상태를 업데이트할 때는 업데이트하려는 오브젝트의 복사본과 그 위에 있는 오브젝트를 "포함하는" 오브젝트를 모두 만들어야 합니다. 자세한 내용은 [중첩된 오브젝트 업데이트 하기](/learn/updating-objects-in-state#updating-a-nested-object)를 읽어 보시기 바랍니다.
 
 <Sandpack>
 
@@ -795,7 +795,7 @@ ul, li { margin: 0; padding: 0; }
 
 #### Immer로 간결한 업데이트 로직 작성하기 {/*작성하기-간결한-업데이트-로직-with-immer*/}
 
-변이 없이 배열과 객체를 업데이트하는 것이 지루하게 느껴진다면, [Immer](https://github.com/immerjs/use-immer)와 같은 라이브러리를 사용하여 반복되는 코드를 줄일 수 있습니다. Immer를 사용하면 객체를 변경하는 것처럼 간결한 코드를 작성할 수 있지만, 내부적으로는 변경 불가능한 업데이트를 수행합니다:
+변이 없이 배열과 오브젝트를 업데이트하는 것이 지루하게 느껴진다면, [Immer](https://github.com/immerjs/use-immer)와 같은 라이브러리를 사용하여 반복되는 코드를 줄일 수 있습니다. Immer를 사용하면 오브젝트를 변경하는 것처럼 간결한 코드를 작성할 수 있지만, 내부적으로는 변경 불가능한 업데이트를 수행합니다:
 
 <Sandpack>
 
@@ -1156,11 +1156,11 @@ button { margin-bottom: 10px; }
 function handleClick() {
   console.log(count);  // 0
 
-  setCount(count + 1); // Request a re-render with 1
-  console.log(count);  // Still 0!
+  setCount(count + 1); // 1로 다시 렌더링 되기를 요청함
+  console.log(count);  // 아직 0!
 
   setTimeout(() => {
-    console.log(count); // Also 0!
+    console.log(count); // 여전히 0!
   }, 5000);
 }
 ```
@@ -1181,15 +1181,15 @@ console.log(nextCount); // 1
 
 ### state를 업데이트했지만 화면이 업데이트되지 않습니다 {/*ive-updated-the-state-but-the-screen-doesnt-update*/}
 
-React는 [`Object.is`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is) 비교에 의해 결정된 대로 다음 상태가 이전 상태와 같으면 업데이트를 **무시합니다. 이는 보통 객체나 배열의 상태를 직접 변경할 때 발생합니다:
+React는 [`Object.is`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is) 비교에 의해 결정된 대로 다음 상태가 이전 상태와 같으면 업데이트를 **무시합니다. 이는 보통 오브젝트나 배열의 상태를 직접 변경할 때 발생합니다:
 ```js
-obj.x = 10;  // 🚩 Wrong: mutating existing object
-setObj(obj); // 🚩 Doesn't do anything
+obj.x = 10;  // 🚩 잘못됨: 이미 존재하는 오브젝트를 변경함
+setObj(obj); // 🚩 아무 동작도 하지 않음
 ```
 
-기존 `obj` 객체를 돌연변이시킨 후 다시 `setObj`로 전달했기 때문에 React가 업데이트를 무시했습니다. 이 문제를 해결하려면 객체와 배열을 _변이시키는 대신 항상 상태의 객체와 배열을 _교체_(#updating-objects-and-arrays-in-state)하도록 해야 합니다:
+기존 `obj` 오브젝트를 돌연변이시킨 후 다시 `setObj`로 전달했기 때문에 React가 업데이트를 무시했습니다. 이 문제를 해결하려면 오브젝트와 배열을 _변이시키는 대신 항상 상태의 오브젝트와 배열을 _교체_(#updating-objects-and-arrays-in-state)하도록 해야 합니다:
 ```js
-// ✅ Correct: creating a new object
+// ✅ 올바름: 새로운 오브젝트 생성하기
 setObj({
   ...obj,
   x: 10
@@ -1203,13 +1203,13 @@ setObj({
 `Too many re-renders. React limits the number of renders to prevent an infinite loop.` ('너무 많은 리렌더링, React는 무한 루프를 방지하기 위해 렌더링 횟수를 제한합니다.') 와 같은 오류가 발생할 수 있습니다. 일반적으로 이것은 *렌더링 중* 상태를 무조건적으로 설정해 무한루프 상태에 들어가고 있음을 의미합니다: 렌더링, state 설정(렌더링 유발), 렌더링, state 설정(렌더링을 유발), ... 이 문제는 이벤트 핸들러를 지정하다가 실수로 인해 발생하곤 합니다:
 
 ```js {1-2}
-// 🚩 Wrong: calls the handler during render
+// 🚩 잘못됨: 렌더링 중 핸들러를 실행시킴
 return <button onClick={handleClick()}>Click me</button>
 
-// ✅ Correct: passes down the event handler
+// ✅ 올바름: 이벤트 핸들러를 내려보냄
 return <button onClick={handleClick}>Click me</button>
 
-// ✅ Correct: passes down an inline function
+// ✅ 올바름: 인라인 함수를 내려보냄
 return <button onClick={(e) => handleClick(e)}>Click me</button>
 ```
 
@@ -1223,16 +1223,16 @@ return <button onClick={(e) => handleClick(e)}>Click me</button>
 
 ```js {2,5-6,11-12}
 function TodoList() {
-  // This component function will run twice for every render.
+  // 이 컴포넌트 함수는 렌더링할 때마다 두 번 실행됩니다.
 
   const [todos, setTodos] = useState(() => {
-    // This initializer function will run twice during initialization.
+    // 이 초기화 함수는 초기화 중에 두 번 실행됩니다.
     return createTodos();
   });
 
   function handleClick() {
     setTodos(prevTodos => {
-      // This updater function will run twice for every click.
+      // 이 업데이터 함수는 클릭할 때마다 두 번 실행됩니다.
       return [...prevTodos, createTodo()];
     });
   }
@@ -1256,7 +1256,7 @@ React는 업데이터 함수를 두 번 호출하기 때문에 할 일이 두 �
 
 ```js {2,3}
 setTodos(prevTodos => {
-  // ✅ Correct: replacing with new state
+  // ✅ 올바름: 새로운 state로 변경
   return [...prevTodos, createTodo()];
 });
 ```
