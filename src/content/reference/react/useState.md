@@ -4,7 +4,7 @@ title: useState
 
 <Intro>
 
-`useState` is a React Hook that lets you add a [state variable](/learn/state-a-components-memory) to your component.
+`useState`는 React Hook으로 컴포넌트에 [state 변수](/learn/state-a-components-memory)를 추가할 수 있게 해줍니다.
 
 ```js
 const [state, setState] = useState(initialState);
@@ -20,7 +20,7 @@ const [state, setState] = useState(initialState);
 
 ### `useState(initialState)` {/*usestate*/}
 
-Call `useState` at the top level of your component to declare a [state variable.](/learn/state-a-components-memory)
+컴포넌트의 상단에서 `useState`를 호출하여 [state 변수](/learn/state-a-components-memory)를 선언합니다.
 
 ```js
 import { useState } from 'react';
@@ -32,32 +32,31 @@ function MyComponent() {
   // ...
 ```
 
-The convention is to name state variables like `[something, setSomething]` using [array destructuring.](https://javascript.info/destructuring-assignment)
+state 변수는 `[something, setSomething]`와 같이 [array destructuring](https://javascript.info/destructuring-assignment)를 이용해 이름을 짓는 것이 컨벤션입니다.
 
-[See more examples below.](#usage)
+[바로가기](#usage)에서 더 많은 예제를 확인할 수 있습니다.
 
-#### Parameters {/*parameters*/}
+#### 인자값 {/*parameters*/}
 
-* `initialState`: The value you want the state to be initially. It can be a value of any type, but there is a special behavior for functions. This argument is ignored after the initial render.
-  * If you pass a function as `initialState`, it will be treated as an _initializer function_. It should be pure, should take no arguments, and should return a value of any type. React will call your initializer function when initializing the component, and store its return value as the initial state. [See an example below.](#avoiding-recreating-the-initial-state)
+* `initialState`: state를 초기값으로 설정합니다. 어떤 타입의 값이든 초기값이 될 수 있지만, 함수의 경우 특별한 동작을 합니다. 이 인자는 초기 렌더링 이후에는 무시됩니다.
+* `initialState`로 함수를 전달하면 _초기화 함수_ 로 취급됩니다. 이 함수는 순수해야 하며, 인자를 가져서는 안 되며, 어떤 타입이든 값을 반환해야 합니다. React는 컴포넌트를 초기화할 때 초기화 함수를 호출하고 반환 값을 최초 state로 저장합니다. [아래의 예제를 참조하세요.](#avoiding-recreating-the-initial-state)
 
-#### Returns {/*returns*/}
+#### 반환값 {/*returns*/}
 
-`useState` returns an array with exactly two values:
+`useState` 는 두 개의 값이 들어있는 배열을 반환합니다:
 
-1. The current state. During the first render, it will match the `initialState` you have passed.
-2. The [`set` function](#setstate) that lets you update the state to a different value and trigger a re-render.
+1.  현재의 state. 최초 렌더링 중에는 당신이 전달한 `initialState`와 일치합니다.
+2.  [`set` 함수](#setstate)는 상태를 다른 값으로 업데이트하고 리렌더링을 할 수 있게 해줍니다.
 
-#### Caveats {/*caveats*/}
+#### 주의사항 {/*caveats*/}
 
-* `useState` is a Hook, so you can only call it **at the top level of your component** or your own Hooks. You can't call it inside loops or conditions. If you need that, extract a new component and move the state into it.
-* In Strict Mode, React will **call your initializer function twice** in order to [help you find accidental impurities.](#my-initializer-or-updater-function-runs-twice) This is development-only behavior and does not affect production. If your initializer function is pure (as it should be), this should not affect the behavior. The result from one of the calls will be ignored.
+* `useState`는 훅이므로 컴포넌트의 **최상위 레벨** 또는 자신의 훅에서만 호출할 수 있습니다. 루프 또는 조건문 내에서 호출할 수 없습니다. 필요한 경우 새 컴포넌트를 추출하고 상태를 해당 컴포넌트로 이동시킵니다.
+* Strict 모드에서는 React가 [실수로 인한 impurities를 찾도록 도와주기 위해](#my-initializer-or-updater-function-runs-twice) 초기화 함수를 두 번 호출합니다. 이것은 개발 전용 동작으로, 프로덕션에는 영향을 미치지 않습니다. 초기화 함수가 순수 함수인 경우 동작에 영향을 주지 않아야 합니다. 두 호출 중 하나의
 
----
 
-### `set` functions, like `setSomething(nextState)` {/*setstate*/}
+### `setSomething(nextState)` 와 같은 `set`함수 {/*setstate*/}
 
-The `set` function returned by `useState` lets you update the state to a different value and trigger a re-render. You can pass the next state directly, or a function that calculates it from the previous state:
+`useState`가 반환하는 `set` 함수를 사용하면 state를 다른 값으로 업데이트하고 리렌더링을 트리거할 수 있습니다. 다음 state를 직접 전달하거나 이전 state의 값으로부터 계산하는 함수를 전달할 수 있습니다:
 
 ```js
 const [name, setName] = useState('Edward');
@@ -68,34 +67,35 @@ function handleClick() {
   // ...
 ```
 
-#### Parameters {/*setstate-parameters*/}
+#### 매개변수 {/*setstate-parameters*/}
 
-* `nextState`: The value that you want the state to be. It can be a value of any type, but there is a special behavior for functions.
-  * If you pass a function as `nextState`, it will be treated as an _updater function_. It must be pure, should take the pending state as its only argument, and should return the next state. React will put your updater function in a queue and re-render your component. During the next render, React will calculate the next state by applying all of the queued updaters to the previous state. [See an example below.](#updating-state-based-on-the-previous-state)
+* `nextState`: state가 앞으로 되길 원하는 값입니다. 모든 타입의 값일 수 있지만 함수에 대한 특별한 동작이 있습니다.
+  * 함수를 `nextState`에 전달하면 _업데이터 함수_ 로 취급됩니다. 이 함수는 순수해야 하고, 보류 중인 state의 값을 유일한 인수로 사용해야 하며, 다음 state를 반환해야 합니다. React는 업데이터 함수를 대기열에 넣고 컴포넌트를 다시 렌더링합니다. 다음 렌더링 중에 React는 대기열에 있는 모든 업데이터 함수를 이전 state에 적용하여 다음 state를 계산합니다. [아래 예시를 참조하세요.](#updating-state-based-on-the-previous-state)
 
-#### Returns {/*setstate-returns*/}
+#### 반환 값 {/*setstate-returns*/}
 
-`set` functions do not have a return value.
+`set` 함수에는 반환 값이 없습니다.
 
-#### Caveats {/*setstate-caveats*/}
+#### 주의사항 {/*setstate-caveats*/}
 
-* The `set` function **only updates the state variable for the *next* render**. If you read the state variable after calling the `set` function, [you will still get the old value](#ive-updated-the-state-but-logging-gives-me-the-old-value) that was on the screen before your call.
+* `set` 함수는 **다음* 렌더링에 대한 상태 변수만 업데이트합니다.** `set` 함수를 호출한 후 상태 변수를 읽으면, 호출 전 화면에 있던 [이전 값이 계속 표시됩니다.](#ive-updated-the-state-but-logging-gives-me-the-old-value)
 
-* If the new value you provide is identical to the current `state`, as determined by an [`Object.is`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is) comparison, React will **skip re-rendering the component and its children.** This is an optimization. Although in some cases React may still need to call your component before skipping the children, it shouldn't affect your code.
+* 만약 여러분이 제공한 새 값이 [`Object.is`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is) 비교에 의해 결정된 현재 `상태`와 동일하다면, React는 **컴포넌트와 그 children들의 리렌더링을 생략합니다**. 경우에 따라 React가 children들을 건너뛰기 전에 여전히 컴포넌트를 호출해야 할 수도 있지만, 코드에는 영향을 미치지 않아야 합니다.
 
-* React [batches state updates.](/learn/queueing-a-series-of-state-updates) It updates the screen **after all the event handlers have run** and have called their `set` functions. This prevents multiple re-renders during a single event. In the rare case that you need to force React to update the screen earlier, for example to access the DOM, you can use [`flushSync`.](/reference/react-dom/flushSync)
+* React는 [상태 업데이트를 일괄(batch) 처리합니다.](/learn/queueing-a-series-of-state-updates) **모든 이벤트 핸들러가 실행되고 난 후** `set` 함수들을 호출한 후에 화면을 업데이트합니다. 이렇게 하면 단일 이벤트 중에 여러 번 리렌더링하는 것을 방지할 수 있습니다. 드문 경우지만 DOM에 접근하기 위해 React가 화면을 더 일찍 업데이트하도록 강제해야 하는 경우, [`flushSync`.](/reference/react-dom/flushSync)를 사용할 수 있습니다.
 
-* Calling the `set` function *during rendering* is only allowed from within the currently rendering component. React will discard its output and immediately attempt to render it again with the new state. This pattern is rarely needed, but you can use it to **store information from the previous renders**. [See an example below.](#storing-information-from-previous-renders)
+* *렌더링 중* `set` 함수를 호출하는 것은 현재 렌더링 중인 컴포넌트 내에서만 허용됩니다. React는 반환값을 버리고 즉시 새로운 상태로 다시 렌더링을 시도합니다. 이 패턴은 거의 필요하지 않지만 **이전에 렌더링 된 정보를 저장**하는 데 사용할 수 있습니다. [아래 예시를 참조하세요.](#storing-information-from-previous-renders)
 
-* In Strict Mode, React will **call your updater function twice** in order to [help you find accidental impurities.](#my-initializer-or-updater-function-runs-twice) This is development-only behavior and does not affect production. If your updater function is pure (as it should be), this should not affect the behavior. The result from one of the calls will be ignored.
+* 스트릭트 모드에서 React는 [실수로 발생한 impurities를 찾기 위해](#my-initializer-or-updater-function-runs-twice) **업데이터 함수를 두 번 호출**합니다. 이는 개발용 빌드에서만의 동작이며 프로덕션에는 영향을 미치지 않습니다. 업데이터 함수가 순수하다면(원래 그래야 하는 것처럼) 동작에 영향을 미치지 않습니다. 호출 중 하나의 결과는 무시됩니다.
+
 
 ---
 
 ## Usage {/*usage*/}
 
-### Adding state to a component {/*adding-state-to-a-component*/}
+### 컴포넌트에 상태 추가하기 {/*adding-state-to-a-component*/}
 
-Call `useState` at the top level of your component to declare one or more [state variables.](/learn/state-a-components-memory)
+컴포넌트의 최상위 레벨에서 `useState`를 호출하여 하나 이상의 [상태 변수](/learn/state-a-components-memory)를 선언하세요.
 
 ```js [[1, 4, "age"], [2, 4, "setAge"], [3, 4, "42"], [1, 5, "name"], [2, 5, "setName"], [3, 5, "'Taylor'"]]
 import { useState } from 'react';
@@ -106,14 +106,14 @@ function MyComponent() {
   // ...
 ```
 
-The convention is to name state variables like `[something, setSomething]` using [array destructuring.](https://javascript.info/destructuring-assignment)
+규칙은 [배열 구조 파괴]를 사용하여 `[something, setSomething]`과 같은 상태 변수의 이름을 지정하는 것입니다.
 
-`useState` returns an array with exactly two items:
+useState`는 정확히 두 개의 항목이 있는 배열을 반환합니다:
 
-1. The <CodeStep step={1}>current state</CodeStep> of this state variable, initially set to the <CodeStep step={3}>initial state</CodeStep> you provided.
-2. The <CodeStep step={2}>`set` function</CodeStep> that lets you change it to any other value in response to interaction.
+1. 이 상태 변수의 <CodeStep step={1}>현재 상태</CodeStep>, 처음에 입력한 <CodeStep step={3}>초기 상태</CodeStep>로 설정됩니다.
+2. 상호작용에 따라 다른 값으로 변경할 수 있는 <CodeStep step={2}>`set` 함수</CodeStep>를 사용합니다.
 
-To update what’s on the screen, call the `set` function with some next state:
+화면의 내용을 업데이트하려면 다음 상태로 `set` 함수를 호출합니다:
 
 ```js [[2, 2, "setName"]]
 function handleClick() {
@@ -121,11 +121,11 @@ function handleClick() {
 }
 ```
 
-React will store the next state, render your component again with the new values, and update the UI.
+React는 다음 state를 저장하고 새로운 값으로 컴포넌트를 다시 렌더링한 후 UI를 업데이트합니다.
 
 <Pitfall>
 
-Calling the `set` function [**does not** change the current state in the already executing code](#ive-updated-the-state-but-logging-gives-me-the-old-value):
+set` 함수를 호출하면 이미 실행 중인 코드에서 현재 상태가 변경되지 않습니다(#ive-updated-the-state-but-logging-gives-me-the-old-value):
 
 ```js {3}
 function handleClick() {
@@ -134,15 +134,15 @@ function handleClick() {
 }
 ```
 
-It only affects what `useState` will return starting from the *next* render.
+다음 렌더링부터 `useState`가 반환할 내용에만 영향을 줍니다.
 
 </Pitfall>
 
 <Recipes titleText="Basic useState examples" titleId="examples-basic">
 
-#### Counter (number) {/*counter-number*/}
+#### 카운터 (숫자) {/*카운터-넘버*/}
 
-In this example, the `count` state variable holds a number. Clicking the button increments it.
+이 예제에서 `count` 상태 변수는 숫자를 담고 있습니다. 버튼을 클릭하면 숫자가 증가합니다.
 
 <Sandpack>
 
@@ -168,9 +168,9 @@ export default function Counter() {
 
 <Solution />
 
-#### Text field (string) {/*text-field-string*/}
+#### 텍스트 필드(문자열) {/*text-field-string*/}
 
-In this example, the `text` state variable holds a string. When you type, `handleChange` reads the latest input value from the browser input DOM element, and calls `setText` to update the state. This allows you to display the current `text` below.
+이 예제에서 `text` 상태 변수는 문자열을 보유합니다. 입력하면 `handleChange`는 브라우저 입력 DOM 요소에서 최신 입력 값을 읽고 `setText`를 호출하여 상태를 업데이트합니다. 이렇게 하면 현재 `text`를 아래에 표시할 수 있습니다.
 
 <Sandpack>
 
@@ -200,9 +200,9 @@ export default function MyInput() {
 
 <Solution />
 
-#### Checkbox (boolean) {/*checkbox-boolean*/}
+#### 체크박스 (부울) {/*체크박스-부울*/}
 
-In this example, the `liked` state variable holds a boolean. When you click the input, `setLiked` updates the `liked` state variable with whether the browser checkbox input is checked. The `liked` variable is used to render the text below the checkbox.
+이 예제에서 `좋아요` 상태 변수는 부울을 보유합니다. 입력을 클릭하면 `setLiked`는 브라우저 체크박스 입력이 선택되었는지 여부로 `liked` 상태 변수를 업데이트합니다. 좋아요` 변수는 체크박스 아래의 텍스트를 렌더링하는 데 사용됩니다.
 
 <Sandpack>
 
@@ -236,9 +236,9 @@ export default function MyCheckbox() {
 
 <Solution />
 
-#### Form (two variables) {/*form-two-variables*/}
+#### 양식 (두 변수) {/*form-two-variables*/}
 
-You can declare more than one state variable in the same component. Each state variable is completely independent.
+동일한 컴포넌트에 둘 이상의 상태 변수를 선언할 수 있습니다. 각 상태 변수는 완전히 독립적입니다.
 
 <Sandpack>
 
@@ -276,9 +276,9 @@ button { display: block; margin-top: 10px; }
 
 ---
 
-### Updating state based on the previous state {/*updating-state-based-on-the-previous-state*/}
+### 이전 상태를 기반으로 상태 업데이트 {/*updating-state-based-on-the-previous-state*/}
 
-Suppose the `age` is `42`. This handler calls `setAge(age + 1)` three times:
+나이`가 `42`라고 가정합니다. 이 핸들러는 `setAge(age + 1)`를 세 번 호출합니다:
 
 ```js
 function handleClick() {
@@ -288,9 +288,9 @@ function handleClick() {
 }
 ```
 
-However, after one click, `age` will only be `43` rather than `45`! This is because calling the `set` function [does not update](/learn/state-as-a-snapshot) the `age` state variable in the already running code. So each `setAge(age + 1)` call becomes `setAge(43)`.
+그러나 한 번 클릭하면 `나이`가 `45`가 아닌 `43`이 됩니다! 이는 `set` 함수를 호출하면 이미 실행 중인 코드에서 `age` 상태 변수가 업데이트되지 않기 때문입니다. 따라서 각 `setAge(age + 1)` 호출은 `setAge(43)`이 됩니다.
 
-To solve this problem, **you may pass an *updater function*** to `setAge` instead of the next state:
+이 문제를 해결하려면 다음 상태 대신 `setAge`에 *업데이터 함수***를 전달하면 됩니다:
 
 ```js [[1, 2, "a", 0], [2, 2, "a + 1"], [1, 3, "a", 0], [2, 3, "a + 1"], [1, 4, "a", 0], [2, 4, "a + 1"]]
 function handleClick() {
@@ -300,39 +300,40 @@ function handleClick() {
 }
 ```
 
-Here, `a => a + 1` is your updater function. It takes the <CodeStep step={1}>pending state</CodeStep> and calculates the <CodeStep step={2}>next state</CodeStep> from it.
+여기서 `a => a + 1`은 업데이터 함수입니다. 이 함수는 <CodeStep step={1}>보류 상태</CodeStep>를 가져와서 그로부터 <CodeStep step={2}>다음 상태</CodeStep>를 계산합니다.
 
-React puts your updater functions in a [queue.](/learn/queueing-a-series-of-state-updates) Then, during the next render, it will call them in the same order:
+React는 업데이터 함수를 [queue.](/learn/queueing-a-series-of-state-updates)에 저장한 다음, 다음 렌더링 중에 같은 순서로 함수를 호출합니다:
 
-1. `a => a + 1` will receive `42` as the pending state and return `43` as the next state.
-1. `a => a + 1` will receive `43` as the pending state and return `44` as the next state.
-1. `a => a + 1` will receive `44` as the pending state and return `45` as the next state.
+1. a => a + 1`은 보류 중인 상태로 `42`를 수신하고 다음 상태로 `43`을 반환합니다.
+1. `a => a + 1`은 `43`을 보류 상태로 수신하고 다음 상태로 `44`를 반환합니다.
+1. a => a + 1`은 `44`를 보류 상태로 수신하고 다음 상태로 `45`를 반환합니다.
 
-There are no other queued updates, so React will store `45` as the current state in the end.
+대기 중인 다른 업데이트가 없으므로 React는 결국 `45`를 현재 상태로 저장합니다.
 
-By convention, it's common to name the pending state argument for the first letter of the state variable name, like `a` for `age`. However, you may also call it like `prevAge` or something else that you find clearer.
+일반적으로 보류 중인 상태 인수의 이름은 상태 변수 이름의 첫 글자, 예를 들어 `age`의 경우 `a`로 지정하는 것이 일반적입니다. 그러나 `prevAge` 또는 더 명확하다고 생각되는 다른 이름으로 부를 수도 있습니다.
 
-React may [call your updaters twice](#my-initializer-or-updater-function-runs-twice) in development to verify that they are [pure.](/learn/keeping-components-pure)
+React는 개발 과정에서 [순수한지 확인하기 위해](/learn/keeping-components-pure) 업데이터를 두 번 호출할 수 있습니다(#my-initializer-or-updater-function-runs-twice).
+
 
 <DeepDive>
 
-#### Is using an updater always preferred? {/*is-using-an-updater-always-preferred*/}
+#### 항상 업데이터 함수를 사용하는 것이 좋나요? {/*is-using-an-updater-always-preferred*/}
 
-You might hear a recommendation to always write code like `setAge(a => a + 1)` if the state you're setting is calculated from the previous state. There is no harm in it, but it is also not always necessary.
+설정하려는 상태가 이전 상태에서 계산되는 경우 항상 `setAge(a => a + 1)`와 같은 코드를 작성하라는 권고를 들을 수 있습니다. 나쁠 것은 없지만 항상 필요한 것은 아닙니다.
 
-In most cases, there is no difference between these two approaches. React always makes sure that for intentional user actions, like clicks, the `age` state variable would be updated before the next click. This means there is no risk of a click handler seeing a "stale" `age` at the beginning of the event handler.
+대부분의 경우 이 두 가지 접근법 사이에는 차이가 없습니다. React는 클릭과 같은 의도적인 사용자 행동에 대해 항상 다음 클릭 전에 `age` 상태 변수가 업데이트되도록 합니다. 즉, 클릭 핸들러가 이벤트 핸들러의 시작 부분에 "오래된" `age`를 볼 위험이 없습니다.
 
-However, if you do multiple updates within the same event, updaters can be helpful. They're also helpful if accessing the state variable itself is inconvenient (you might run into this when optimizing re-renders).
+그러나 동일한 이벤트 내에서 여러 번 업데이트를 수행하는 경우 업데이터 함수가 유용할 수 있습니다. 상태 변수 자체에 액세스하는 것이 불편한 경우에도 유용합니다(리렌더를 최적화할 때 이 문제가 발생할 수 있습니다).
 
-If you prefer consistency over slightly more verbose syntax, it's reasonable to always write an updater if the state you're setting is calculated from the previous state. If it's calculated from the previous state of some *other* state variable, you might want to combine them into one object and [use a reducer.](/learn/extracting-state-logic-into-a-reducer)
+조금 더 자세한 구문보다 일관성을 선호하는 경우 설정하려는 상태가 이전 상태에서 계산되는 경우 항상 업데이터를 작성하는 것이 합리적입니다. 다른 상태 변수의 이전 상태에서 계산되는 경우, 이를 하나의 오브젝트로 결합하고 [리듀서를 사용하는 것이 좋습니다.](/learn/extracting-state-logic-into-a-reducer)
 
 </DeepDive>
 
-<Recipes titleText="The difference between passing an updater and passing the next state directly" titleId="examples-updater">
+<Recipes titleText="업데이터 함수를 전달하는 것과 다음 state를 직접 전달하는 것의 차이점" titleId="examples-updater">
 
-#### Passing the updater function {/*passing-the-updater-function*/}
+#### 업데이터 함수 전달 {/*passing-the-updater-function*/}
 
-This example passes the updater function, so the "+3" button works.
+이 예제는 업데이터 함수를 전달하므로 "+3" 버튼이 작동합니다.
 
 <Sandpack>
 
@@ -371,9 +372,9 @@ h1 { display: block; margin: 10px; }
 
 <Solution />
 
-#### Passing the next state directly {/*passing-the-next-state-directly*/}
+#### 다음 상태를 직접 전달 {/*-passing-the-next-state-directly*/}
 
-This example **does not** pass the updater function, so the "+3" button **doesn't work as intended**.
+이 예제에서는 업데이터 함수를 전달하지 않으므로 "+3" 버튼이 **의도한 대로 작동하지 않습니다**.
 
 <Sandpack>
 
@@ -416,32 +417,33 @@ h1 { display: block; margin: 10px; }
 
 ---
 
-### Updating objects and arrays in state {/*updating-objects-and-arrays-in-state*/}
+### 상태의 오브젝트 및 배열 업데이트하기 {/*updating-objects-and-arrays-in-state*/}
 
-You can put objects and arrays into state. In React, state is considered read-only, so **you should *replace* it rather than *mutate* your existing objects**. For example, if you have a `form` object in state, don't mutate it:
+오브젝트와 배열을 state에 넣을 수 있습니다. React에서 state는 읽기 전용으로 간주되므로 **기존 오브젝트를 *변경*하는 것이 아니라 *대체*해야 합니다**. 예를 들어, state에 'form' 오브젝트가 있다면 변경하지 마세요:
+
 
 ```js
-// 🚩 Don't mutate an object in state like this:
+// 🚩 다음과 같은 state의 오브젝트를 변경하지 마세요:
 form.firstName = 'Taylor';
 ```
 
-Instead, replace the whole object by creating a new one:
+대신, 새 오브젝트를 생성하여 전체 오브젝트를 교체합니다:
 
 ```js
-// ✅ Replace state with a new object
+// ✅ state를 새 오브젝트로 바꾸기
 setForm({
   ...form,
   firstName: 'Taylor'
 });
 ```
 
-Read [updating objects in state](/learn/updating-objects-in-state) and [updating arrays in state](/learn/updating-arrays-in-state) to learn more.
+자세한 내용은 [state 오브젝트 업데이트하기](/learn/updating-objects-in-state) 및 [state 배열 업데이트하기](/learn/updating-arrays-in-state) 문서를 참조하세요.
 
 <Recipes titleText="Examples of objects and arrays in state" titleId="examples-objects">
 
 #### Form (object) {/*form-object*/}
 
-In this example, the `form` state variable holds an object. Each input has a change handler that calls `setForm` with the next state of the entire form. The `{ ...form }` spread syntax ensures that the state object is replaced rather than mutated.
+이 예제에서 `form` 상태 변수는 오브젝트를 보유합니다. 각 입력에는 전체 양식의 다음 상태로 `setForm`을 호출하는 변경 핸들러가 있습니다. 스프레드 구문 `{ ...form }`은 상태 오브젝트가 변경되지 않고 대체되도록 합니다.
 
 <Sandpack>
 
@@ -512,9 +514,9 @@ input { margin-left: 5px; }
 
 <Solution />
 
-#### Form (nested object) {/*form-nested-object*/}
+#### 폼 (중첩된 오브젝트) {/*form-nested-object*/}
 
-In this example, the state is more nested. When you update nested state, you need to create a copy of the object you're updating, as well as any objects "containing" it on the way upwards. Read [updating a nested object](/learn/updating-objects-in-state#updating-a-nested-object) to learn more.
+이 예제에서는 상태가 더 중첩되어 있습니다. 중첩된 상태를 업데이트할 때는 업데이트하려는 오브젝트의 복사본과 그 위에 있는 오브젝트를 "포함하는" 오브젝트를 모두 만들어야 합니다. 자세한 내용은 [중첩된 오브젝트 업데이트 하기](/learn/updating-objects-in-state#updating-a-nested-object)를 읽어 보시기 바랍니다.
 
 <Sandpack>
 
@@ -624,9 +626,9 @@ img { width: 200px; height: 200px; }
 
 <Solution />
 
-#### List (array) {/*list-array*/}
+#### 리스트 (배열) {/*list-array*/}
 
-In this example, the `todos` state variable holds an array. Each button handler calls `setTodos` with the next version of that array. The `[...todos]` spread syntax, `todos.map()` and `todos.filter()` ensure the state array is replaced rather than mutated.
+이 예제에서 `todos` 상태 변수는 배열을 가리킵니다. 각 버튼 핸들러는 해당 배열의 다음 버전으로 `setTodos`를 호출합니다. '[...todos]` 스프레드 구문, `todos.map()` 및 `todos.filter()`는 state 배열이 내부적으로 변경되기보단 교체되도록 합니다.
 
 <Sandpack>
 
@@ -791,9 +793,9 @@ ul, li { margin: 0; padding: 0; }
 
 <Solution />
 
-#### Writing concise update logic with Immer {/*writing-concise-update-logic-with-immer*/}
+#### Immer로 간결한 업데이트 로직 작성하기 {/*작성하기-간결한-업데이트-로직-with-immer*/}
 
-If updating arrays and objects without mutation feels tedious, you can use a library like [Immer](https://github.com/immerjs/use-immer) to reduce repetitive code. Immer lets you write concise code as if you were mutating objects, but under the hood it performs immutable updates:
+변이 없이 배열과 오브젝트를 업데이트하는 것이 지루하게 느껴진다면, [Immer](https://github.com/immerjs/use-immer)와 같은 라이브러리를 사용하여 반복되는 코드를 줄일 수 있습니다. Immer를 사용하면 오브젝트를 변경하는 것처럼 간결한 코드를 작성할 수 있지만, 내부적으로는 변경 불가능한 업데이트를 수행합니다:
 
 <Sandpack>
 
@@ -882,9 +884,9 @@ function ItemList({ artworks, onToggle }) {
 
 ---
 
-### Avoiding recreating the initial state {/*avoiding-recreating-the-initial-state*/}
+### 초기 상태 재생성 방지 {/*avoiding-recreating-the-initial-state*/}
 
-React saves the initial state once and ignores it on the next renders.
+React는 초기 state를 한 번 저장하고 다음 렌더링에서 무시합니다.
 
 ```js
 function TodoList() {
@@ -892,9 +894,9 @@ function TodoList() {
   // ...
 ```
 
-Although the result of `createInitialTodos()` is only used for the initial render, you're still calling this function on every render. This can be wasteful if it's creating large arrays or performing expensive calculations.
+createInitialTodos()`의 결과는 초기 렌더링에만 사용되지만 여전히 모든 렌더링에서 이 함수를 호출하게 됩니다. 이는 큰 배열을 생성하거나 값비싼 계산을 수행하는 경우 낭비가 될 수 있습니다.
 
-To solve this, you may **pass it as an _initializer_ function** to `useState` instead:
+이 문제를 해결하려면 이 함수를 `useState`에 _initializer_ 함수로 전달하면 됩니다:
 
 ```js
 function TodoList() {
@@ -902,15 +904,15 @@ function TodoList() {
   // ...
 ```
 
-Notice that you’re passing `createInitialTodos`, which is the *function itself*, and not `createInitialTodos()`, which is the result of calling it. If you pass a function to `useState`, React will only call it during initialization.
+함수를 호출한 결과인 `createInitialTodos()`가 아니라 *함수 자체인 `createInitialTodos`를 전달하고 있다는 것을 주목하세요. 만약 `useState`에 함수를 전달하면 React는 초기화 중에만 함수를 호출합니다.
 
-React may [call your initializers twice](#my-initializer-or-updater-function-runs-twice) in development to verify that they are [pure.](/learn/keeping-components-pure)
+React는 개발 중에 이니셜라이저가 [순수]한지 확인하기 위해 [이니셜라이저를 두 번 호출](#my-initializer-or-updater-function-runs-twice)할 수 있습니다.
 
-<Recipes titleText="The difference between passing an initializer and passing the initial state directly" titleId="examples-initializer">
+<Recipes titleText="이니셜라이저를 전달하는 것과 초기 상태를 직접 전달하는 것의 차이점" titleId="examples-initializer">
 
-#### Passing the initializer function {/*passing-the-initializer-function*/}
+#### 이니셜라이저 함수 전달 {/*passing-the-initializer-function*/}
 
-This example passes the initializer function, so the `createInitialTodos` function only runs during initialization. It does not run when component re-renders, such as when you type into the input.
+이 예제에서는 이니셜라이저 함수를 전달하므로 `createInitialTodos` 함수는 초기화 중에만 실행됩니다. 사용자가 입력을 입력할 때와 같이 컴포넌트가 다시 렌더링할 때는 실행되지 않습니다.
 
 <Sandpack>
 
@@ -961,9 +963,9 @@ export default function TodoList() {
 
 <Solution />
 
-#### Passing the initial state directly {/*passing-the-initial-state-directly*/}
+#### 초기 상태 직접 전달 {/*passing-the-initial-state-directly*/}
 
-This example **does not** pass the initializer function, so the `createInitialTodos` function runs on every render, such as when you type into the input. There is no observable difference in behavior, but this code is less efficient.
+이 예제에서는 이니셜라이저 함수를 전달하지 않으므로, 입력을 입력할 때와 같이 모든 렌더링에서 `createInitialTodos` 함수가 실행됩니다. 동작에 관찰할 수 있는 차이는 없지만 이 코드는 효율성이 떨어집니다.
 
 <Sandpack>
 
@@ -1018,13 +1020,13 @@ export default function TodoList() {
 
 ---
 
-### Resetting state with a key {/*resetting-state-with-a-key*/}
+### key로 state 를 다시 설정하기 {/*resetting-state-with-a-key*/}
 
-You'll often encounter the `key` attribute when [rendering lists.](/learn/rendering-lists) However, it also serves another purpose.
+리스트를 렌더링할 때 `key` 속성을 자주 접하게 되지만(/learn/rendering-lists), 다른 용도로도 사용할 수 있습니다.
 
-You can **reset a component's state by passing a different `key` to a component.** In this example, the Reset button changes the `version` state variable, which we pass as a `key` to the `Form`. When the `key` changes, React re-creates the `Form` component (and all of its children) from scratch, so its state gets reset.
+컴포넌트에 다른 `key`를 전달하여 컴포넌트의 상태를 **재설정할 수 있습니다.** 이 예제에서 Reset 버튼은 `버전` 상태 변수를 변경하고, `key`로 전달한 값을 `Form`에 전달합니다. 키`가 변경되면 React는 `Form` 컴포넌트(및 그 모든 자식)를 처음부터 다시 생성하므로 상태가 초기화됩니다.
 
-Read [preserving and resetting state](/learn/preserving-and-resetting-state) to learn more.
+자세한 내용은 [state 보존 및 초기화](/learn/preserving-and-resetting-state)를 읽어보세요.
 
 <Sandpack>
 
@@ -1069,19 +1071,19 @@ button { display: block; margin-bottom: 20px; }
 
 ---
 
-### Storing information from previous renders {/*storing-information-from-previous-renders*/}
+### 이전 렌더링의 정보 저장 {/*storing-information-from-previous-renders*/}
 
-Usually, you will update state in event handlers. However, in rare cases you might want to adjust state in response to rendering -- for example, you might want to change a state variable when a prop changes.
+일반적으로 이벤트 핸들러에서 상태를 업데이트합니다. 그러나 드물게 렌더링에 대한 응답으로 상태를 조정하고 싶을 수도 있습니다(예: 소품이 변경될 때 상태 변수를 변경하고 싶을 수 있습니다).
 
-In most cases, you don't need this:
+대부분의 경우 이 기능은 필요하지 않습니다:
 
-* **If the value you need can be computed entirely from the current props or other state, [remove that redundant state altogether.](/learn/choosing-the-state-structure#avoid-redundant-state)** If you're worried about recomputing too often, the [`useMemo` Hook](/reference/react/useMemo) can help.
-* If you want to reset the entire component tree's state, [pass a different `key` to your component.](#resetting-state-with-a-key)
-* If you can, update all the relevant state in the event handlers.
+* 필요한 값을 현재 프롭이나 다른 상태로부터 완전히 계산할 수 있다면, [해당 중복 상태를 모두 제거하세요.](/learn/choosing-the-state-structure#avoid-redundant-state)** 너무 자주 재계산하는 것이 걱정된다면, [`useMemo` Hook](/reference/react/useMemo)이 도움이 될 수 있습니다.
+* 전체 컴포넌트 트리의 상태를 초기화하려면 [컴포넌트에 다른 `키`를 전달하세요.](#resetting-state-with-a-key).
+* 가능하면 이벤트 핸들러에서 모든 관련 상태를 업데이트하세요.
 
-In the rare case that none of these apply, there is a pattern you can use to update state based on the values that have been rendered so far, by calling a `set` function while your component is rendering.
+이 중 어느 것도 적용되지 않는 드문 경우, 컴포넌트가 렌더링되는 동안 `set` 함수를 호출하여 지금까지 렌더링된 값을 기반으로 상태를 업데이트하는 데 사용할 수 있는 패턴이 있습니다.
 
-Here's an example. This `CountLabel` component displays the `count` prop passed to it:
+다음은 예시입니다. 이 `CountLabel` 컴포넌트는 전달된 `count` 프로퍼티를 표시합니다:
 
 ```js CountLabel.js
 export default function CountLabel({ count }) {
@@ -1089,8 +1091,7 @@ export default function CountLabel({ count }) {
 }
 ```
 
-Say you want to show whether the counter has *increased or decreased* since the last change. The `count` prop doesn't tell you this -- you need to keep track of its previous value. Add the `prevCount` state variable to track it. Add another state variable called `trend` to hold whether the count has increased or decreased. Compare `prevCount` with `count`, and if they're not equal, update both `prevCount` and `trend`. Now you can show both the current count prop and *how it has changed since the last render*.
-
+마지막 변경 이후 카운터가 *증가 또는 감소*했는지 표시하고 싶다고 가정해 보겠습니다. `count` 프로퍼티는 이를 알려주지 않으므로 이전 값을 추적해야 합니다. 이를 추적하기 위해 `prevCount` 상태 변수를 추가합니다. `trend`라는 다른 상태 변수를 추가하여 count의 증가 또는 감소 여부를 유지합니다. `prevCount`와 `count`를 비교하고, 같지 않으면 `prevCount`와 `trend`를 모두 업데이트합니다. 이제 현재의 count prop과 *마지막 렌더링 이후 어떻게 변화했는지*를 모두 표시할 수 있습니다.
 <Sandpack>
 
 ```js App.js
@@ -1138,34 +1139,35 @@ button { margin-bottom: 10px; }
 
 </Sandpack>
 
-Note that if you call a `set` function while rendering, it must be inside a condition like `prevCount !== count`, and there must be a call like `setPrevCount(count)` inside of the condition. Otherwise, your component would re-render in a loop until it crashes. Also, you can only update the state of the *currently rendering* component like this. Calling the `set` function of *another* component during rendering is an error. Finally, your `set` call should still [update state without mutation](#updating-objects-and-arrays-in-state) -- this doesn't mean you can break other rules of [pure functions.](/learn/keeping-components-pure)
+렌더링하는 동안 `set` 함수를 호출하는 경우 `prevCount !== count`와 같은 조건 안에 있어야 하며, 조건 안에 `setPrevCount(count)`와 같은 호출이 있어야 한다는 점에 유의하세요. 그렇지 않으면 컴포넌트가 충돌할 때까지 루프에서 다시 렌더링됩니다. 또한 다음과 같이 *현재 렌더링 중인* 컴포넌트의 상태만 업데이트할 수 있습니다. 렌더링 중에 *다른* 컴포넌트의 `set` 함수를 호출하는 것은 오류입니다. 마지막으로, `set` 호출은 여전히 [변이 없이 상태 업데이트](#updating-objects-and-arrays-in-state)를 해야 하며, 이는 [순수 함수]의 다른 규칙을 위반할 수 없다는 것을 의미하지는 않습니다.
 
-This pattern can be hard to understand and is usually best avoided. However, it's better than updating state in an effect. When you call the `set` function during render, React will re-render that component immediately after your component exits with a `return` statement, and before rendering the children. This way, children don't need to render twice. The rest of your component function will still execute (and the result will be thrown away). If your condition is below all the Hook calls, you may add an early `return;` to restart rendering earlier.
+이 패턴은 이해하기 어려울 수 있으며 일반적으로 피하는 것이 가장 좋습니다. 하지만 이펙트에서 상태를 업데이트하는 것보다 낫습니다. 렌더링 도중 `set` 함수를 호출하면 React는 컴포넌트가 `return` 문으로 종료된 직후와 자식들을 렌더링하기 전에 해당 컴포넌트를 다시 렌더링합니다. 이렇게 하면 자식 컴포넌트를 두 번 렌더링할 필요가 없습니다. 나머지 컴포넌트 함수는 계속 실행되고 결과는 버려집니다. 조건이 모든 Hook 호출보다 낮은 경우, `return;`을 추가하여 렌더링을 더 일찍 다시 시작할 수 있습니다.
 
 ---
 
-## Troubleshooting {/*troubleshooting*/}
+## 문제 해결 {/*troubleshooting*/}
 
-### I've updated the state, but logging gives me the old value {/*ive-updated-the-state-but-logging-gives-me-the-old-value*/}
+### 상태를 업데이트했지만 로깅하면 이전 값이 나옵니다 {/*ive-updated-the-state-but-logging-gives-me-the-old-value*/}
 
-Calling the `set` function **does not change state in the running code**:
+'set' 함수를 호출해도 **실행 중인 코드에서 상태가 변경되지 않습니다**:
+
 
 ```js {4,5,8}
 function handleClick() {
   console.log(count);  // 0
 
-  setCount(count + 1); // Request a re-render with 1
-  console.log(count);  // Still 0!
+  setCount(count + 1); // 1로 다시 렌더링 되기를 요청함
+  console.log(count);  // 아직 0!
 
   setTimeout(() => {
-    console.log(count); // Also 0!
+    console.log(count); // 여전히 0!
   }, 5000);
 }
 ```
 
-This is because [states behaves like a snapshot.](/learn/state-as-a-snapshot) Updating state requests another render with the new state value, but does not affect the `count` JavaScript variable in your already-running event handler.
+상태는 스냅샷처럼 동작하기 때문입니다. (/learn/state-as-a-snapshot) 상태를 업데이트하면 새 상태 값으로 다른 렌더링을 요청하지만 이미 실행 중인 이벤트 핸들러의 `count` JavaScript 변수에는 영향을 미치지 않습니다.
 
-If you need to use the next state, you can save it in a variable before passing it to the `set` function:
+다음 상태를 사용해야 하는 경우 `set` 함수에 전달하기 전에 변수에 저장할 수 있습니다:
 
 ```js
 const nextCount = count + 1;
@@ -1177,19 +1179,17 @@ console.log(nextCount); // 1
 
 ---
 
-### I've updated the state, but the screen doesn't update {/*ive-updated-the-state-but-the-screen-doesnt-update*/}
+### state를 업데이트했지만 화면이 업데이트되지 않습니다 {/*ive-updated-the-state-but-the-screen-doesnt-update*/}
 
-React will **ignore your update if the next state is equal to the previous state,** as determined by an [`Object.is`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is) comparison. This usually happens when you change an object or an array in state directly:
-
+React는 [`Object.is`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is) 비교에 의해 결정된 대로 다음 상태가 이전 상태와 같으면 업데이트를 **무시합니다. 이는 보통 오브젝트나 배열의 상태를 직접 변경할 때 발생합니다:
 ```js
-obj.x = 10;  // 🚩 Wrong: mutating existing object
-setObj(obj); // 🚩 Doesn't do anything
+obj.x = 10;  // 🚩 잘못됨: 이미 존재하는 오브젝트를 변경함
+setObj(obj); // 🚩 아무 동작도 하지 않음
 ```
 
-You mutated an existing `obj` object and passed it back to `setObj`, so React ignored the update. To fix this, you need to ensure that you're always [_replacing_ objects and arrays in state instead of _mutating_ them](#updating-objects-and-arrays-in-state):
-
+기존 `obj` 오브젝트를 돌연변이시킨 후 다시 `setObj`로 전달했기 때문에 React가 업데이트를 무시했습니다. 이 문제를 해결하려면 오브젝트와 배열을 _변이시키는 대신 항상 상태의 오브젝트와 배열을 _교체_(#updating-objects-and-arrays-in-state)하도록 해야 합니다:
 ```js
-// ✅ Correct: creating a new object
+// ✅ 올바름: 새로운 오브젝트 생성하기
 setObj({
   ...obj,
   x: 10
@@ -1198,52 +1198,52 @@ setObj({
 
 ---
 
-### I'm getting an error: "Too many re-renders" {/*im-getting-an-error-too-many-re-renders*/}
+### 오류가 발생했습니다: "너무 많은 리렌더링" {/*im-getting-an-error-too-many-re-renders*/}
 
-You might get an error that says: `Too many re-renders. React limits the number of renders to prevent an infinite loop.` Typically, this means that you're unconditionally setting state *during render*, so your component enters a loop: render, set state (which causes a render), render, set state (which causes a render), and so on. Very often, this is caused by a mistake in specifying an event handler:
+`Too many re-renders. React limits the number of renders to prevent an infinite loop.` ('너무 많은 리렌더링, React는 무한 루프를 방지하기 위해 렌더링 횟수를 제한합니다.') 와 같은 오류가 발생할 수 있습니다. 일반적으로 이것은 *렌더링 중* 상태를 무조건적으로 설정해 무한루프 상태에 들어가고 있음을 의미합니다: 렌더링, state 설정(렌더링 유발), 렌더링, state 설정(렌더링을 유발), ... 이 문제는 이벤트 핸들러를 지정하다가 실수로 인해 발생하곤 합니다:
 
 ```js {1-2}
-// 🚩 Wrong: calls the handler during render
+// 🚩 잘못됨: 렌더링 중 핸들러를 실행시킴
 return <button onClick={handleClick()}>Click me</button>
 
-// ✅ Correct: passes down the event handler
+// ✅ 올바름: 이벤트 핸들러를 내려보냄
 return <button onClick={handleClick}>Click me</button>
 
-// ✅ Correct: passes down an inline function
+// ✅ 올바름: 인라인 함수를 내려보냄
 return <button onClick={(e) => handleClick(e)}>Click me</button>
 ```
 
-If you can't find the cause of this error, click on the arrow next to the error in the console and look through the JavaScript stack to find the specific `set` function call responsible for the error.
+이 오류의 원인을 찾을 수 없는 경우 콘솔에서 오류 옆에 있는 화살표를 클릭하고 자바스크립트 스택을 살펴보고 오류의 원인이 되는 특정 `set` 함수 호출을 찾아보세요.
 
 ---
 
-### My initializer or updater function runs twice {/*my-initializer-or-updater-function-runs-twice*/}
+### 내 초기화 또는 업데이터 함수가 두 번 실행됨 {/*my-initializer-or-updater-function-runs-twice*/}
 
-In [Strict Mode](/reference/react/StrictMode), React will call some of your functions twice instead of once:
+[Strict 모드](/reference/react/StrictMode)에서는, React가 일부 함수를 한 번이 아닌 두 번 호출합니다.
 
 ```js {2,5-6,11-12}
 function TodoList() {
-  // This component function will run twice for every render.
+  // 이 컴포넌트 함수는 렌더링할 때마다 두 번 실행됩니다.
 
   const [todos, setTodos] = useState(() => {
-    // This initializer function will run twice during initialization.
+    // 이 초기화 함수는 초기화 중에 두 번 실행됩니다.
     return createTodos();
   });
 
   function handleClick() {
     setTodos(prevTodos => {
-      // This updater function will run twice for every click.
+      // 이 업데이터 함수는 클릭할 때마다 두 번 실행됩니다.
       return [...prevTodos, createTodo()];
     });
   }
   // ...
 ```
 
-This is expected and shouldn't break your code.
+이는 의도된 동작이며 이렇게 작동함으로서 문제가 발생되지 않아야 합니다.
 
-This **development-only** behavior helps you [keep components pure.](/learn/keeping-components-pure) React uses the result of one of the calls, and ignores the result of the other call. As long as your component, initializer, and updater functions are pure, this shouldn't affect your logic. However, if they are accidentally impure, this helps you notice the mistakes.
+이 **개발 전용** 동작은 컴포넌트를 [순수하게 유지](/learn/keeping-components-pure)하는 데 도움이 됩니다. React는 호출 중 하나의 결과를 사용하고 다른 호출의 결과는 무시합니다. 컴포넌트, 이니셜라이저, 업데이터 함수가 순수하다면 로직에 영향을 미치지 않을 것입니다. 그러나 실수로 impure한 경우, 이 동작은 실수를 알아차리는 데 도움이 됩니다.
 
-For example, this impure updater function mutates an array in state:
+예를 들어, 이 impure한 업데이터 함수는 상태의 배열을 변경합니다:
 
 ```js {2,3}
 setTodos(prevTodos => {
@@ -1252,24 +1252,24 @@ setTodos(prevTodos => {
 });
 ```
 
-Because React calls your updater function twice, you'll see the todo was added twice, so you'll know that there is a mistake. In this example, you can fix the mistake by [replacing the array instead of mutating it](#updating-objects-and-arrays-in-state):
+React는 업데이터 함수를 두 번 호출하기 때문에 할 일이 두 번 추가되었음을 알 수 있으므로 실수가 있다는 것을 알 수 있습니다. 이 예제에서는 [배열을 변경하는 대신 배열을 교체](#updating-objects-and-arrays-in-state)하여 실수를 수정할 수 있습니다:
 
 ```js {2,3}
 setTodos(prevTodos => {
-  // ✅ Correct: replacing with new state
+  // ✅ 올바름: 새로운 state로 변경
   return [...prevTodos, createTodo()];
 });
 ```
 
-Now that this updater function is pure, calling it an extra time doesn't make a difference in behavior. This is why React calling it twice helps you find mistakes. **Only component, initializer, and updater functions need to be pure.** Event handlers don't need to be pure, so React will never call your event handlers twice.
+이제 이 업데이터 함수는 순수 함수이므로 한 번 더 호출해도 동작에 차이가 없습니다. 그렇기 때문에 React에서 두 번 호출하면 실수를 찾는 데 도움이 됩니다. **컴포넌트, 이니셜라이저, 업데이터 함수만 순수해야 합니다.** 이벤트 핸들러는 순수할 필요가 없으므로 React는 절대 이벤트 핸들러를 두 번 호출하지 않습니다.
 
-Read [keeping components pure](/learn/keeping-components-pure) to learn more.
+자세한 내용은 [컴포넌트 순수하게 유지하기](/learn/keeping-components-pure)를 읽어보세요.
 
 ---
 
-### I'm trying to set state to a function, but it gets called instead {/*im-trying-to-set-state-to-a-function-but-it-gets-called-instead*/}
+### 상태를 함수로 설정하려고 하는데 대신 함수가 호출됩니다 {/*im-trying-to-set-state-to-a-function-but-it-gets-called-instead*/}. {/*상태를-함수로-설정하려고-하는데-대신-함수가-호출됩니다-im-trying-to-set-state-to-a-function-but-it-gets-called-instead*/}
 
-You can't put a function into state like this:
+이런 식으로 함수를 state에 넣을 수 없습니다:
 
 ```js
 const [fn, setFn] = useState(someFunction);
@@ -1279,7 +1279,7 @@ function handleClick() {
 }
 ```
 
-Because you're passing a function, React assumes that `someFunction` is an [initializer function](#avoiding-recreating-the-initial-state), and that `someOtherFunction` is an [updater function](#updating-state-based-on-the-previous-state), so it tries to call them and store the result. To actually *store* a function, you have to put `() =>` before them in both cases. Then React will store the functions you pass.
+함수를 전달하기 때문에 React는 `someFunction`이 [초기화 함수](#avoiding-recreating-the-initial-state)이고, `someOtherFunction`이 [업데이터 함수](#updater-state-based-on-the-previous-state)라고 가정하여 이를 호출하고 결과를 저장하려고 시도합니다. 실제로 함수를 저장하려면 두 경우 모두 함수 앞에 '() =>`를 넣어야 합니다. 그러면 React가 전달한 함수를 저장합니다.
 
 ```js {1,4}
 const [fn, setFn] = useState(() => someFunction);
