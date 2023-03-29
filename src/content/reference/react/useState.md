@@ -4,7 +4,7 @@ title: useState
 
 <Intro>
 
-`useState` is a React Hook that lets you add a [state variable](/learn/state-a-components-memory) to your component.
+`useState`는 React Hook으로 컴포넌트에 [state 변수](/learn/state-a-components-memory)를 추가할 수 있게 해줍니다.
 
 ```js
 const [state, setState] = useState(initialState);
@@ -20,7 +20,7 @@ const [state, setState] = useState(initialState);
 
 ### `useState(initialState)` {/*usestate*/}
 
-Call `useState` at the top level of your component to declare a [state variable.](/learn/state-a-components-memory)
+컴포넌트의 상단에서 `useState`를 호출하여 [state 변수](/learn/state-a-components-memory)를 선언합니다.
 
 ```js
 import { useState } from 'react';
@@ -32,28 +32,27 @@ function MyComponent() {
   // ...
 ```
 
-The convention is to name state variables like `[something, setSomething]` using [array destructuring.](https://javascript.info/destructuring-assignment)
+state 변수는 `[something, setSomething]`와 같이 [array destructuring](https://javascript.info/destructuring-assignment)를 이용해 이름을 짓는 것이 컨벤션입니다.
 
-[See more examples below.](#usage)
+[바로가기](#usage)에서 더 많은 예제를 확인할 수 있습니다.
 
-#### Parameters {/*parameters*/}
+#### 인자값들 {/*parameters*/}
 
-* `initialState`: The value you want the state to be initially. It can be a value of any type, but there is a special behavior for functions. This argument is ignored after the initial render.
-  * If you pass a function as `initialState`, it will be treated as an _initializer function_. It should be pure, should take no arguments, and should return a value of any type. React will call your initializer function when initializing the component, and store its return value as the initial state. [See an example below.](#avoiding-recreating-the-initial-state)
+* `initialState`: state를 초기값으로 설정합니다. 어떤 타입의 값이든 초기값이 될 수 있지만, 함수의 경우 특별한 동작을 합니다. 이 인자는 초기 렌더링 이후에는 무시됩니다.
+* `initialState`로 함수를 전달하면 _초기화 함수_ 로 취급됩니다. 이 함수는 순수해야 하며, 인자를 가져서는 안 되며, 어떤 타입이든 값을 반환해야 합니다. React는 컴포넌트를 초기화할 때 초기화 함수를 호출하고 반환 값을 최초 state로 저장합니다. [아래의 예제를 참조하세요.](#avoiding-recreating-the-initial-state)
 
-#### Returns {/*returns*/}
+#### 반환값들 {/*returns*/}
 
-`useState` returns an array with exactly two values:
+`useState` 는 두 개의 값이 들어있는 배열을 반환합니다:
 
-1. The current state. During the first render, it will match the `initialState` you have passed.
-2. The [`set` function](#setstate) that lets you update the state to a different value and trigger a re-render.
+1.  현재의 state. 최초 렌더링 중에는 당신이 전달한 `initialState`와 일치합니다.
+2.  [`set` 함수](#setstate)는 상태를 다른 값으로 업데이트하고 리렌더링을 할 수 있게 해줍니다.
 
-#### Caveats {/*caveats*/}
+#### 주의사항 {/*caveats*/}
 
-* `useState` is a Hook, so you can only call it **at the top level of your component** or your own Hooks. You can't call it inside loops or conditions. If you need that, extract a new component and move the state into it.
-* In Strict Mode, React will **call your initializer function twice** in order to [help you find accidental impurities.](#my-initializer-or-updater-function-runs-twice) This is development-only behavior and does not affect production. If your initializer function is pure (as it should be), this should not affect the behavior. The result from one of the calls will be ignored.
+* `useState`는 훅이므로 컴포넌트의 **최상위 레벨** 또는 자신의 훅에서만 호출할 수 있습니다. 루프 또는 조건문 내에서 호출할 수 없습니다. 필요한 경우 새 컴포넌트를 추출하고 상태를 해당 컴포넌트로 이동시킵니다.
+* Strict 모드에서는 React가 [실수로 인한 impurities를 찾도록 도와주기 위해](#my-initializer-or-updater-function-runs-twice) 초기화 함수를 두 번 호출합니다. 이것은 개발 전용 동작으로, 프로덕션에는 영향을 미치지 않습니다. 초기화 함수가 순수 함수인 경우 동작에 영향을 주지 않아야 합니다. 두 호출 중 하나의
 
----
 
 ### `set` functions, like `setSomething(nextState)` {/*setstate*/}
 
@@ -512,9 +511,9 @@ input { margin-left: 5px; }
 
 <Solution />
 
-#### Form (nested object) {/*form-nested-object*/}
+#### 폼 (중첩된 오브젝트) {/*form-nested-object*/}
 
-In this example, the state is more nested. When you update nested state, you need to create a copy of the object you're updating, as well as any objects "containing" it on the way upwards. Read [updating a nested object](/learn/updating-objects-in-state#updating-a-nested-object) to learn more.
+이 예제에서는 상태가 더 중첩되어 있습니다. 중첩된 상태를 업데이트할 때는 업데이트하려는 객체의 복사본과 그 위에 있는 객체를 "포함하는" 객체를 모두 만들어야 합니다. 자세한 내용은 [중첩된 오브젝트 업데이트 하기](/learn/updating-objects-in-state#updating-a-nested-object)를 읽어 보시기 바랍니다.
 
 <Sandpack>
 
@@ -624,9 +623,9 @@ img { width: 200px; height: 200px; }
 
 <Solution />
 
-#### List (array) {/*list-array*/}
+#### 리스트 (배열) {/*list-array*/}
 
-In this example, the `todos` state variable holds an array. Each button handler calls `setTodos` with the next version of that array. The `[...todos]` spread syntax, `todos.map()` and `todos.filter()` ensure the state array is replaced rather than mutated.
+이 예제에서 `todos` 상태 변수는 배열을 가리킵니다. 각 버튼 핸들러는 해당 배열의 다음 버전으로 `setTodos`를 호출합니다. '[...todos]` 스프레드 구문, `todos.map()` 및 `todos.filter()`는 state 배열이 내부적으로 변경되기보단 교체되도록 합니다.
 
 <Sandpack>
 

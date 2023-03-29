@@ -1,6 +1,6 @@
 ---
 id: home
-title: React – The library for web and native user interfaces
+title: 리액트 – 웹 및 네이티브 사용자 인터페이스를 위한 라이브러리
 permalink: index.html
 ---
 
